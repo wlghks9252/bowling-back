@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jh.bowlingplace.repository.GoodsRepository">
+    <select id="getList" parameterType="GoodsDomain" resultType="GoodsDomain">
+        SELECT
+            GOODS_ID,
+            CAPSULE_ID,
+            GOODS_NAME
+        FROM BOWLING_CAP_GOODS
+            ORDER BY GOODS_ID DESC
+    </select>
+
+    <select id="get" parameterType="int" resultType="GoodsDomain">
+        SELECT
+            G.GOODS_ID,
+            G.CAPSULE_ID,
+            G.GOODS_NAME
+        FROM BOWLING_CAP_GOODS G
+        LEFT JOIN BOWLING_CAPSULE C
+        ON G.CAPSULE_ID = C.CAPSULE_ID
+        WHERE G.CAPSULE_ID = #{capsuleId}
+        ORDER BY G.GOODS_ID DESC
+    </select>
+<!--    centerID로 goods목록 가져오기-->
+    <select id="getGoodsListByCenterId" parameterType="int" resultType="GoodsDomain">
+        SELECT
+            C.GOODS_NAME,
+            A.CENTER_ID,
+            B.CAPSULE_SCORE
+        FROM BOWLING_CAP_GOODS C
+        LEFT JOIN BOWLING_CAPSULE B
+        ON B.CAPSULE_ID = C.CAPSULE_ID
+        LEFT JOIN BOWLING_CENTER A
+        ON A.CENTER_ID = B.CENTER_ID
+        WHERE A.CENTER_ID = #{centerId}
+        ORDER BY C.GOODS_ID DESC
+    </select>
+
+    <insert id="save" parameterType="GoodsDomain" useGeneratedKeys="true" keyProperty="goodsId">
+        INSERT INTO BOWLING_CAP_GOODS
+        (
+            CAPSULE_ID,
+            GOODS_NAME
+        )
+        VALUES
+        (
+            #{capsuleId},
+            #{goodsName}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="int">
+        DELETE
+        FROM BOWLING_CAP_GOODS
+        WHERE GOODS_ID = #{goodsId}
+    </delete>
+
+</mapper>
+

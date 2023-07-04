@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0/EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<typeAliases>
+    <typeAlias alias="CapsuleDomain" type="com.jh.bowlingplace.domain.CapsuleDomain"/>
+    <typeAlias alias="CenterDomain" type="com.jh.bowlingplace.domain.CenterDomain"/>
+    <typeAlias alias="ClubDomain" type="com.jh.bowlingplace.domain.ClubDomain"/>
+    <typeAlias alias="CommentDomain" type="com.jh.bowlingplace.domain.CommentDomain"/>
+    <typeAlias alias="GoodsDomain" type="com.jh.bowlingplace.domain.GoodsDomain"/>
+
+</typeAliases>
+
+</configuration>

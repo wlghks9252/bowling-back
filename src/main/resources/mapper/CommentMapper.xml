@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jh.bowlingplace.repository.CommentRepository">
+    <select id="getList" parameterType="CommentDomain" resultType="CommentDomain">
+        SELECT
+            COM_NO,
+            CENTER_ID,
+            COM_ID,
+            COM_PW,
+            COM_CONTENT
+        FROM BOWLING_COMMENT
+            ORDER BY COM_NO DESC
+    </select>
+
+    <select id="get" parameterType="int" resultType="CommentDomain">
+        SELECT
+            C.COM_NO,
+            C.CENTER_ID,
+            C.COM_ID,
+            C.COM_PW,
+            C.COM_CONTENT
+        FROM BOWLING_COMMENT C
+        LEFT JOIN BOWLING_CENTER B
+        ON C.CENTER_ID = B.CENTER_ID
+        WHERE C.CENTER_ID = #{centerId}
+        ORDER BY C.COM_NO DESC
+
+    </select>
+
+    <insert id="save" parameterType="CommentDomain" useGeneratedKeys="true" keyProperty="comNo">
+        INSERT INTO BOWLING_COMMENT
+        (
+            CENTER_ID,
+            COM_ID,
+            COM_PW,
+            COM_CONTENT
+        )
+        VALUES
+        (
+            #{centerId},
+            #{comId},
+            #{comPw},
+            #{comContent}
+        )
+    </insert>
+    <update id="update" parameterType="CommentDomain">
+        UPDATE BOWLING_COMMENT
+        SET
+            COM_ID = #{comId},
+            COM_PW = #{comPw},
+            COM_CONTENT = #{comContent}
+            WHERE COM_NO = #{comNo}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE
+        FROM BOWLING_COMMENT
+        WHERE COM_NO = #{comNo}
+    </delete>
+
+</mapper>
+

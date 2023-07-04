@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jh.bowlingplace.repository.CapsuleRepository">
+    <select id="getList" parameterType="CapsuleDomain" resultType="CapsuleDomain">
+        SELECT BC.CENTER_NAME,BC.CENTER_ID,
+               BCA.CAPSULE_ID, BCA.CAPSULE_SDATE, BCA.CAPSULE_SCORE
+        FROM BOWLING_CAPSULE BCA
+                 JOIN BOWLING_CENTER BC ON BCA.CENTER_ID = BC.CENTER_ID
+        ORDER BY BCA.CAPSULE_ID DESC
+    </select>
+
+    <select id="get" parameterType="int" resultType="CapsuleDomain">
+        SELECT
+            C.CENTER_ID,
+            B.CENTER_NAME,
+            C.CAPSULE_ID,
+            C.CAPSULE_SDATE,
+            C.CAPSULE_SCORE
+        FROM BOWLING_CAPSULE C
+        LEFT JOIN BOWLING_CENTER B
+        ON C.CENTER_ID = B.CENTER_ID
+        WHERE C.CAPSULE_ID = #{capsuleID}
+    </select>
+
+    <insert id="save" parameterType="CapsuleDomain" useGeneratedKeys="true" keyProperty="capsuleId">
+        INSERT INTO BOWLING_CAPSULE
+        (
+            CENTER_ID,
+            CAPSULE_SDATE,
+            CAPSULE_SCORE
+        )
+        VALUES
+        (
+            #{centerId},
+            TO_DATE(#{capsuleSdate},'YYYY-MM-DD'),
+            #{capsuleScore}
+        )
+    </insert>
+    <update id="update" parameterType="CapsuleDomain">
+        UPDATE BOWLING_CAPSULE
+        SET
+            CAPSULE_SDATE = TO_DATE(#{capsuleSdate},'YYYY-MM-DD'),
+            CAPSULE_SCORE = #{capsuleScore, jdbcType=INTEGER}
+        WHERE CAPSULE_ID = #{capsuleId}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE
+        FROM BOWLING_CAPSULE
+        WHERE CAPSULE_ID = #{capsuleId}
+    </delete>
+
+</mapper>
+

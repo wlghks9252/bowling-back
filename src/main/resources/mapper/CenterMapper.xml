@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jh.bowlingplace.repository.CenterRepository">
+    <select id="getList" parameterType="CenterDomain" resultType="CenterDomain">
+        SELECT
+            CENTER_ID,
+            CENTER_NAME,
+            START_TIME,
+            END_TIME,
+            CENTER_ADDRESS,
+            CENTER_TEL,
+            CENTER_LAT,
+            CENTER_LON,
+            NOR_PRICE,
+            MEM_PRICE
+        FROM BOWLING_CENTER
+        ORDER BY CENTER_ID DESC
+    </select>
+
+    <select id="get" parameterType="int" resultType="CenterDomain">
+        SELECT
+            CENTER_ID,
+            CENTER_NAME,
+            START_TIME,
+            END_TIME,
+            CENTER_ADDRESS,
+            CENTER_TEL,
+            CENTER_LAT,
+            CENTER_LON,
+            NOR_PRICE,
+            MEM_PRICE
+        FROM BOWLING_CENTER
+        WHERE CENTER_ID = #{centerId}
+        ORDER BY CENTER_ID DESC
+    </select>
+
+    <insert id="save" parameterType="CenterDomain" useGeneratedKeys="true" keyProperty="centerId">
+    INSERT INTO BOWLING_CENTER
+        (
+            CENTER_NAME,
+            START_TIME,
+            END_TIME,
+            CENTER_ADDRESS,
+            CENTER_TEL,
+            CENTER_LAT,
+            CENTER_LON,
+            NOR_PRICE,
+            MEM_PRICE
+        )
+        VALUES
+        (
+            #{centerName},
+            #{startTime},
+            #{endTime},
+            #{centerAddress},
+            #{centerTel},
+            #{centerLat},
+            #{centerLon},
+            #{norPrice},
+            #{memPrice}
+        )
+    </insert>
+    <update id="update" parameterType="CenterDomain">
+        UPDATE BOWLING_CENTER
+        SET
+            CENTER_NAME = #{centerName},
+            START_TIME = #{startTime},
+            END_TIME = #{endTime},
+            CENTER_ADDRESS = #{centerAddress},
+            CENTER_TEL = #{centerTel},
+            CENTER_LAT = #{centerLat},
+            CENTER_LON = #{centerLon},
+            NOR_PRICE = #{norPrice},
+            MEM_PRICE = #{memPrice}
+        WHERE CENTER_ID = #{centerId}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM BOWLING_CENTER
+        WHERE CENTER_ID = #{centerId}
+    </delete>
+
+</mapper>
+

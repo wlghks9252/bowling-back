@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jh.bowlingplace.repository.ClubRepository">
+    <select id="getList" parameterType="ClubDomain" resultType="ClubDomain">
+        SELECT BC.CENTER_NAME,
+               C.CLUB_ID, C.CLUB_NAME, C.CLUB_PER, C.CLUB_DAY,C.CENTER_ID
+        FROM BOWLING_CLUB C
+                 JOIN BOWLING_CENTER BC ON C.CENTER_ID = BC.CENTER_ID
+        ORDER BY C.CLUB_ID DESC
+    </select>
+
+    <select id="get" parameterType="int" resultType="ClubDomain">
+        SELECT
+            B.CENTER_NAME,
+            C.CLUB_ID,
+            C.CENTER_ID,
+            C.CLUB_NAME,
+            C.CLUB_PER,
+            C.CLUB_DAY
+        FROM BOWLING_CLUB C
+        LEFT JOIN BOWLING_CENTER B
+        ON C.CENTER_ID = B.CENTER_ID
+        WHERE C.CLUB_ID = #{clubId}
+        ORDER BY C.CLUB_ID DESC
+    </select>
+
+<!--    centerId로 클럽목록 가져오기-->
+    <select id="getClubListByCenterId" parameterType="int" resultType="ClubDomain">
+        SELECT
+            C.CENTER_ID,
+            C.CLUB_NAME,
+            C.CLUB_PER,
+            C.CLUB_DAY
+        FROM BOWLING_CLUB C
+                 LEFT JOIN BOWLING_CENTER B
+                           ON C.CENTER_ID = B.CENTER_ID
+        WHERE C.CENTER_ID = #{centerId}
+        ORDER BY C.CLUB_ID DESC
+    </select>
+
+    <insert id="save" parameterType="ClubDomain" useGeneratedKeys="true" keyProperty="clubId">
+        INSERT INTO BOWLING_CLUB
+        (
+            CENTER_ID,
+            CLUB_NAME,
+            CLUB_PER,
+            CLUB_DAY
+        )
+        VALUES
+        (
+            #{centerId},
+            #{clubName},
+            #{clubPer},
+            #{clubDay}
+        )
+    </insert>
+
+    <update id="update" parameterType="ClubDomain">
+        UPDATE BOWLING_CLUB
+        SET
+            CLUB_NAME = #{clubName},
+            CLUB_PER = #{clubPer},
+            CLUB_DAY = #{clubDay}
+        WHERE CLUB_ID = #{clubId}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE
+        FROM BOWLING_CLUB
+        WHERE CLUB_ID = #{clubId}
+    </delete>
+
+</mapper>
+
